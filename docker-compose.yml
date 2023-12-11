@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  ros2:
+    build:
+      context: .
+      network: host
+      dockerfile: ./docker/Dockerfile
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: 1
+            capabilities: [gpu]
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - DEBIAN_FRONTEND=interactive
+    working_dir: /home/ros_ws
+    volumes:
+      - .:/home/ros_ws
+    stdin_open: true
+    tty: true
